@@ -3,6 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import useForm from '../lib/useForm';
 import Form from '../styles/Form';
 import DisplayError from './ErrorMessage';
+import { ALL_PRODUCTS_QUERY } from './Products';
 
 const CREATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(
@@ -37,6 +38,7 @@ export default function CreateProduct() {
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputs,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
     }
   );
 
@@ -52,7 +54,14 @@ export default function CreateProduct() {
       <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="image">
           Image
-          <input type="file" id="image" name="image" onChange={handleChange} />
+          <input
+            required
+            aria-required
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleChange}
+          />
         </label>
         <label htmlFor="name">
           Name
