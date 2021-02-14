@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "keystone-next",
-    "seed-date": "keystone-next --seed-date",
+    "seed-data": "keystone-next --seed-data",
     "updateBrowserslist": "npx browserslist@latest --update-db updates caniuse-lite"
   },
   "dependencies": {
