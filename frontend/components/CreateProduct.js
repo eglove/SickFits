@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { gql, useMutation } from '@apollo/client';
+import Router from 'next/router';
 import useForm from '../lib/useForm';
 import Form from '../styles/Form';
 import DisplayError from './ErrorMessage';
@@ -46,8 +47,11 @@ export default function CreateProduct() {
     <Form
       onSubmit={async (event) => {
         event.preventDefault();
-        await createProduct();
+        const response = await createProduct();
         clearForm();
+        await Router.push({
+          pathname: `/product/${response.data.createProduct.id}`,
+        });
       }}
     >
       <DisplayError error={error} />
