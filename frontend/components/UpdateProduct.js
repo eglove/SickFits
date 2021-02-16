@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import Router from 'next/router';
 import Form from '../styles/Form';
 import DisplayError from './ErrorMessage';
 import useForm from '../lib/useForm';
@@ -40,10 +39,10 @@ export default function UpdateProduct({ id }) {
 
   const [
     updateProduct,
-    { data: updateData, error: updateError, loading: updateLoading },
+    { error: updateError, loading: updateLoading },
   ] = useMutation(UPDATE_PRODUCT_MUTATION);
 
-  const { inputs, handleChange, clearForm, resetForm } = useForm(data?.Product);
+  const { inputs, handleChange } = useForm(data?.Product);
 
   if (loading) return <p>Loading...</p>;
 
@@ -51,7 +50,7 @@ export default function UpdateProduct({ id }) {
     <Form
       onSubmit={async (event) => {
         event.preventDefault();
-        const response = await updateProduct({
+        await updateProduct({
           variables: {
             id,
             name: inputs.name,

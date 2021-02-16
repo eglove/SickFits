@@ -15,7 +15,9 @@ export default class SickFitsDocument extends Document {
   render() {
     return (
       <Html lang="en-US">
-        <Head />
+        <Head>
+          <title>Sick Fits</title>
+        </Head>
         <body>
           <Main />
           <NextScript />

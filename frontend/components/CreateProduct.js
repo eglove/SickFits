@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { gql, useMutation } from '@apollo/client';
 import Router from 'next/router';
 import useForm from '../lib/useForm';
@@ -28,14 +27,14 @@ const CREATE_PRODUCT_MUTATION = gql`
 `;
 
 export default function CreateProduct() {
-  const { inputs, handleChange, clearForm, resetForm } = useForm({
+  const { inputs, handleChange, clearForm } = useForm({
     image: '',
     name: 'Ethan',
     price: 200000,
     description: 'hey der',
   });
 
-  const [createProduct, { loading, error, data }] = useMutation(
+  const [createProduct, { loading, error }] = useMutation(
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputs,
