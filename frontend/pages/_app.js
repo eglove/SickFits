@@ -1,28 +1,28 @@
-import PropTypes from 'prop-types'
-import NProgress from 'nprogress'
-import Router from 'next/router'
-import { ApolloProvider } from '@apollo/client'
-import Page from '../components/Page'
-import withData from '../lib/withData'
+import PropTypes from 'prop-types';
+import NProgress from 'nprogress';
+import Router from 'next/router';
+import { ApolloProvider } from '@apollo/client';
+import Page from '../components/Page';
+import withData from '../lib/withData';
 
-import '../styles/nprogress.css'
-import Head from 'next/head'
+import '../styles/nprogress.css';
+import Head from 'next/head';
 
-Router.events.on('routeChangeStart', () => NProgress.start())
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
-function SickFits ({ Component, pageProps, apollo }) {
+function SickFits({ Component, pageProps, apollo }) {
   return (
-      <ApolloProvider client={apollo}>
-        <Head>
-          <title>Sick Fits</title>
-        </Head>
-        <Page>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Component {...pageProps} />
-        </Page>
-      </ApolloProvider>
+    <ApolloProvider client={apollo}>
+      <Head>
+        <title>Sick Fits</title>
+      </Head>
+      <Page>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <Component {...pageProps} />
+      </Page>
+    </ApolloProvider>
   );
 }
 

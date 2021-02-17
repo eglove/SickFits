@@ -1,19 +1,19 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client';
 
 export const CURRENT_USER_QUERY = gql`
-    query {
-        authenticatedItem {
-            ... on User {
-                id
-                email
-                name
-                # TODO query the cart when we have it
-            }
-        }
+  query {
+    authenticatedItem {
+      ... on User {
+        id
+        email
+        name
+        # TODO query the cart when we have it
+      }
     }
-`
+  }
+`;
 
-export default function useUser () {
-  const { data } = useQuery(CURRENT_USER_QUERY)
-  return data?.authenticatedItem
+export default function useUser() {
+  const { data } = useQuery(CURRENT_USER_QUERY);
+  return data?.authenticatedItem;
 }
