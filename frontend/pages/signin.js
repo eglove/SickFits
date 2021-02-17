@@ -1,5 +1,7 @@
-export default function SigninPage() {
-  return <p>Sign In</p>;
+import SignIn from '../components/SignIn';
+
+export default function SignInPage() {
+  return <SignIn />;
 }
 
-SigninPage.propTypes = {};
+SignInPage.propTypes = {};
