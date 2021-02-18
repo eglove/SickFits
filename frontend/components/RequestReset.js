@@ -1,7 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import Form from '../styles/Form';
 import useForm from '../lib/useForm';
-import { CURRENT_USER_QUERY } from './User';
 import DisplayError from './ErrorMessage';
 
 const REQUEST_RESET_MUTATION = gql`
@@ -18,12 +17,9 @@ export default function RequestReset() {
     email: '',
   });
 
-  const [signUp, { data, loading, error }] = useMutation(
-    REQUEST_RESET_MUTATION,
-    {
-      variables: inputs,
-    }
-  );
+  const [signUp, { data, error }] = useMutation(REQUEST_RESET_MUTATION, {
+    variables: inputs,
+  });
 
   async function handleSubmit(event) {
     event.preventDefault();
