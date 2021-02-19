@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { HeaderStyles, LogoStyles } from '../styles/HeaderStyles';
 import Nav from './Nav';
+import Cart from './Cart';
 
 export default function Header() {
   return (
@@ -14,6 +15,7 @@ export default function Header() {
       <div className="sub-bar">
         <p>Search</p>
       </div>
+      <Cart />
     </HeaderStyles>
   );
 }
