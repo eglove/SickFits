@@ -41,7 +41,7 @@ export interface MailResponse {
   messageId: string;
 }
 
-export async function sendPasswordRestEmail(
+export async function sendPasswordResetEmail(
   resetToken: string,
   to: string
 ): Promise<void> {

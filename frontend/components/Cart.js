@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import CartStyles from '../styles/CartStyles';
 import useUser from './User';
 import Supreme from '../styles/Supreme';
