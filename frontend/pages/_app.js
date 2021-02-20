@@ -7,6 +7,7 @@ import withData from '../lib/withData';
 
 import '../styles/nprogress.css';
 import Head from 'next/head';
+import { CartStateProvider } from '../lib/cartState';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -15,13 +16,15 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function SickFits({ Component, pageProps, apollo }) {
   return (
     <ApolloProvider client={apollo}>
-      <Head>
-        <title>Sick Fits</title>
-      </Head>
-      <Page>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
-      </Page>
+      <CartStateProvider>
+        <Head>
+          <title>Sick Fits</title>
+        </Head>
+        <Page>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+        </Page>
+      </CartStateProvider>
     </ApolloProvider>
   );
 }

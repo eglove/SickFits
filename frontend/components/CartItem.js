@@ -6,7 +6,7 @@ const CartItemStyles = styled.li`
   padding: 1rem 0;
   border-bottom: 1px solid var(--lightGrey);
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: repeat(2, 1fr);
 
   img {
     margin-right: 1rem;
@@ -14,7 +14,7 @@ const CartItemStyles = styled.li`
 
   h3,
   p {
-    margin: 0;
+    margin: 0 0 0 1rem;
   }
 `;
 
