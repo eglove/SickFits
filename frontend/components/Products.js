@@ -13,6 +13,7 @@ export const ALL_PRODUCTS_QUERY = gql`
       description
       photo {
         id
+        altText
         image {
           publicUrlTransformed
         }
