@@ -8,6 +8,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { useState } from 'react';
 import nProgress from 'nprogress';
+import { gql, useMutation } from '@apollo/client';
 import SickButton from '../styles/SickButton';
 
 const CheckoutFormStyles = styled.form`
@@ -19,6 +20,20 @@ const CheckoutFormStyles = styled.form`
   grid-gap: 1rem;
 `;
 
+const CREATE_ORDER_MUTATION = gql`
+  mutation CREATE_ORDER_MUTATION($token: String!) {
+    checkout(token: $token) {
+      id
+      charge
+      total
+      items {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const stripeLib = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
 function CheckoutForm() {
@@ -26,6 +41,10 @@ function CheckoutForm() {
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const [checkout, { error: graphqlError }] = useMutation(
+    CREATE_ORDER_MUTATION
+  );
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -38,7 +57,18 @@ function CheckoutForm() {
 
     if (error) {
       setError(error);
+      nProgress.done();
+      return;
     }
+
+    const order = await checkout({
+      variables: {
+        token: paymentMethod.id,
+      },
+    });
+
+    console.log('finished with order');
+    console.log(order);
 
     setLoading(false);
     nProgress.done();
@@ -47,6 +77,7 @@ function CheckoutForm() {
   return (
     <CheckoutFormStyles onSubmit={handleSubmit}>
       {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
+      {graphqlError && <p style={{ fontSize: 12 }}>{graphqlError.message}</p>}
       <CardElement />
       <SickButton>Check Out Now</SickButton>
     </CheckoutFormStyles>
