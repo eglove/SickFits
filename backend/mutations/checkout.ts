@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { KeystoneContext, SessionStore } from '@keystone-next/types';
+import {KeystoneContext} from '@keystone-next/types';
 import {CartItemCreateInput, OrderCreateInput} from './../.keystone/schema-types'
 import stripeConfig from "../lib/stripe";
 
@@ -11,39 +11,39 @@ interface Arguments {
 
 async function checkout(
     root: any,
-    { token }: Arguments,
+    {token}: Arguments,
     context: KeystoneContext
 ): Promise<OrderCreateInput> {
     const userId = context.session.itemId;
-    if(!userId) {
+    if (!userId) {
         throw new Error('Sorry! You must be signed in to create an order!');
     }
 
-    const user = await context.lists.User.findOne({
-        where: {id: userId},
-        resolveFields: graphql`
+  const user = await context.lists.User.findOne({
+      where: {id: userId},
+    resolveFields: graphql`
+        id
+        name
+        email
+        cart {
             id
-            name 
-            email
-            cart {
+            quantity
+            product {
+                name
+                price
+                description
                 id
-                quantity
-                product {
-                    name
-                    price
-                    description
+                photo {
                     id
-                    photo {
+                    image {
                         id
-                        image {
-                            id
-                            publicUrlTransformed
-                        }
+                        publicUrlTransformed
                     }
                 }
             }
-        `
-    })
+        }
+    `
+  })
 
     const cartItems = user.cart.filter(cartItem => cartItem.product);
     const amount = cartItems.reduce(function (tally: number, cartItem: CartItemCreateInput) {
@@ -59,6 +59,32 @@ async function checkout(
         console.log(err);
         throw new Error(err.message);
     })
+
+    const orderItems = cartItems.map(cartItem => {
+        return {
+            name: cartItem.product.name,
+            description: cartItem.product.description,
+            price: cartItem.product.price,
+            quantity: cartItem.quantity,
+            photo: {connect: {id: cartItem.product.photo.id}},
+        };
+    })
+
+    const order = await context.lists.Order.createOne({
+        data: {
+            total: charge.amount,
+            charge: charge.id,
+            items: {create: orderItems},
+            user: {connect: {id: userId}}
+        }
+    });
+
+    const cartItemIds = cartItems.map(cartItem => cartItem.id);
+    await context.lists.CartItem.deleteMany({
+        ids: cartItemIds,
+    });
+
+    return order;
 }
 
 export default checkout;
